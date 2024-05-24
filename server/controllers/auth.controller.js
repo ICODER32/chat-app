@@ -4,9 +4,11 @@ import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
-    const { fullName, username, password, confirmPassword, gender } = req.body;
-    if (password !== confirmPassword)
+    const { fullname, username, password, confirmPassword, gender } = req.body;
+    if (password !== confirmPassword) {
+      console.log(password, confirmPassword);
       return res.status(400).json({ message: "Password doesn't match." });
+    }
     const existingUser = await User.findOne({ username });
 
     if (existingUser)
@@ -19,7 +21,7 @@ export const signup = async (req, res) => {
     const girlprofilePicture = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
     const user = new User({
-      fullName,
+      fullname,
       username,
       password: hashedPassword,
       gender,
@@ -29,11 +31,12 @@ export const signup = async (req, res) => {
     generateToken(user._id, res);
     res.status(200).json({
       _id: user._id,
-      fullName: user.fullName,
+      fullName: user.fullname,
       username: user.username,
       gender: user.gender,
       profilePicture: user.profilePicture,
     });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong." });
