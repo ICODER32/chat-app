@@ -6,7 +6,6 @@ export const signup = async (req, res) => {
   try {
     const { fullname, username, password, confirmPassword, gender } = req.body;
     if (password !== confirmPassword) {
-      console.log(password, confirmPassword);
       return res.status(400).json({ message: "Password doesn't match." });
     }
     const existingUser = await User.findOne({ username });
@@ -36,7 +35,6 @@ export const signup = async (req, res) => {
       gender: user.gender,
       profilePicture: user.profilePicture,
     });
-    
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong." });
